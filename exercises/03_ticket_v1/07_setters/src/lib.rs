@@ -9,22 +9,38 @@ pub struct Ticket {
 }
 
 impl Ticket {
-    pub fn new(title: String, description: String, status: String) -> Ticket {
+    fn panic_if_title_is_empty(title: &String) {
         if title.is_empty() {
             panic!("Title cannot be empty");
         }
+    }
+    fn panic_if_title_is_too_long(title: &String) {
         if title.len() > 50 {
             panic!("Title cannot be longer than 50 characters");
         }
+    }
+    fn panic_if_description_is_empty(description: &String) {
         if description.is_empty() {
             panic!("Description cannot be empty");
         }
+    }
+    fn panic_if_description_is_too_long(description: &String) {
         if description.len() > 500 {
             panic!("Description cannot be longer than 500 characters");
         }
+    }
+    fn panic_if_invalid_status(status: &String) {
         if status != "To-Do" && status != "In Progress" && status != "Done" {
             panic!("Only `To-Do`, `In Progress`, and `Done` statuses are allowed");
         }
+    }
+
+    pub fn new(title: String, description: String, status: String) -> Ticket {
+        Self::panic_if_title_is_empty(&title);
+        Self::panic_if_title_is_too_long(&title);
+        Self::panic_if_description_is_empty(&description);
+        Self::panic_if_description_is_too_long(&description);
+        Self::panic_if_invalid_status(&status);
 
         Ticket {
             title,
@@ -37,12 +53,29 @@ impl Ticket {
         &self.title
     }
 
+    pub fn set_title(&mut self, title: String) {
+        Self::panic_if_title_is_empty(&title);
+        Self::panic_if_title_is_too_long(&title);
+        self.title = title
+    }
+
     pub fn description(&self) -> &String {
         &self.description
     }
 
+    pub fn set_description(&mut self, description: String) {
+        Self::panic_if_description_is_empty(&description);
+        Self::panic_if_description_is_too_long(&description);
+        self.description = description
+    }
+
     pub fn status(&self) -> &String {
         &self.status
+    }
+
+    pub fn set_status(&mut self, status: String) {
+        Self::panic_if_invalid_status(&status);
+        self.status = status
     }
 }
 
